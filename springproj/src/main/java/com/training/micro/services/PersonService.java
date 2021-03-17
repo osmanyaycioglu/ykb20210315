@@ -28,4 +28,8 @@ public class PersonService {
         this.counter.incrementAndGet();
     }
 
+    public void suspend(final String username) {
+        this.personMap.remove(username);
+    }
+
 }

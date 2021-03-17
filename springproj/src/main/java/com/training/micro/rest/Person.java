@@ -10,14 +10,18 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
+import com.training.micro.validation.StartWith;
+
 public class Person {
 
     @NotEmpty
     @Size(min = 5, max = 20, message = "username 5 ile 20 arasında olmalı")
     private String    username;
     @NotNull(message = "name null olamaz")
+    @StartWith(value = "is", message = "İsim is ile başlamalı")
     private String    name;
     @NotEmpty
+    @StartWith("soy")
     private String    surname;
     @Past
     private LocalDate birthday;
