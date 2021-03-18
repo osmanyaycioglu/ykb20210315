@@ -1,0 +1,5 @@
+docker run -d --name apiwateway -e PORT=80 -e DISCOVERY=http://discovery/eureka/ --network ykb_net1 -p 8080:80 node-config
+docker run -d --name config -e PORT=80 --network ykb_net1 node-config
+docker run -d --name discovery --network ykb_net1 -e PORT=80 -p 4444:80 node-discovery
+docker run --name order1 -e DISCOVERY=http://discovery/eureka/ -e CONFIG=http://config --network ykb_net1 ms-order
+docker run -d --name account1 -e DISCOVERY=http://discovery/eureka/ -e CONFIG=http://config --network ykb_net1 ms-accounting

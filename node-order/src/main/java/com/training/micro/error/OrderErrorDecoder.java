@@ -15,7 +15,7 @@ public class OrderErrorDecoder implements ErrorDecoder {
     @Override
     public MyRestClientException decode(final String methodKeyParam,
                                         final Response responseParam) {
-        if (responseParam.status() != 404) {
+        if ((responseParam.status() != 404) && (responseParam.status() != 503)) {
             try {
                 InputStream asInputStreamLoc = responseParam.body()
                                                             .asInputStream();
@@ -27,7 +27,15 @@ public class OrderErrorDecoder implements ErrorDecoder {
                 return new MyRestClientException(eLoc.getMessage());
             }
         }
-        return new MyRestClientException("Not found exception");
+        switch (responseParam.status()) {
+            case 404:
+                return new MyRestClientException("Not found exception");
+            case 503:
+                return new MyRestClientException("No MS instance");
+
+            default:
+                return new MyRestClientException("Unknown exception");
+        }
     }
 
 }
