@@ -2,10 +2,22 @@ package com.training.micro.contollers;
 
 import java.math.BigDecimal;
 
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
+
 public class PaymetRequest {
 
+    @Size(min = 2, max = 20)
     private String     customer;
+    @NotNull
+    @Positive
     private Long       customerId;
+    @DecimalMax("1000")
+    @DecimalMin("10")
+    @Positive
     private BigDecimal amount;
 
     public String getCustomer() {

@@ -10,6 +10,8 @@ import org.springframework.web.client.RestTemplate;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 import com.netflix.discovery.shared.Application;
+import com.training.micro.error.MyRestClientException;
+import com.training.micro.order.clients.IAccountingClient;
 import com.training.micro.order.models.Order;
 import com.training.micro.order.models.PaymetRequest;
 
@@ -17,10 +19,13 @@ import com.training.micro.order.models.PaymetRequest;
 public class OrderService {
 
     @Autowired
-    private RestTemplate rt;
+    private RestTemplate      rt;
 
     @Autowired
-    private EurekaClient eurekaClient;
+    private EurekaClient      eurekaClient;
+
+    @Autowired
+    private IAccountingClient iac;
 
     public String placeOrder(final Order orderParam) {
         PaymetRequest paymetRequestLoc = new PaymetRequest();
@@ -30,6 +35,14 @@ public class OrderService {
         return this.rt.postForObject("http://ACCOUNTING/api/v1/payment/pay",
                                      paymetRequestLoc,
                                      String.class);
+    }
+
+    public String placeOrder2(final Order orderParam) throws MyRestClientException {
+        PaymetRequest paymetRequestLoc = new PaymetRequest();
+        paymetRequestLoc.setCustomer(orderParam.getCustomer());
+        paymetRequestLoc.setCustomerId(orderParam.getCustomerId());
+        paymetRequestLoc.setAmount(new BigDecimal(100));
+        return this.iac.pay(paymetRequestLoc);
     }
 
     public String placeOrder3(final Order orderParam) {
